@@ -49,10 +49,22 @@ export default function GameSetup({ onCreateGame }) {
             <span className="label-icon">🎮</span>
             Game Mode
           </label>
-          <select value={mode} onChange={(e) => setMode(e.target.value)}>
-            <option value="x01">X01 (501/301/101/1001)</option>
-            <option value="free">Free Play (no checkout)</option>
-          </select>
+          <div className="control-segment">
+            <button
+              type="button"
+              className={`segment-btn ${mode === "x01" ? "active" : ""}`}
+              onClick={() => setMode("x01")}
+            >
+              X01
+            </button>
+            <button
+              type="button"
+              className={`segment-btn ${mode === "free" ? "active" : ""}`}
+              onClick={() => setMode("free")}
+            >
+              Free Play
+            </button>
+          </div>
         </div>
 
         <div className="form-group">
@@ -60,10 +72,22 @@ export default function GameSetup({ onCreateGame }) {
             <span className="label-icon">🧮</span>
             Score Input
           </label>
-          <select value={inputMode} onChange={(e) => setInputMode(e.target.value)}>
-            <option value="board">Dartboard</option>
-            <option value="grid">Grid (S/D/T)</option>
-          </select>
+          <div className="control-segment">
+            <button
+              type="button"
+              className={`segment-btn ${inputMode === "board" ? "active" : ""}`}
+              onClick={() => setInputMode("board")}
+            >
+              Dartboard
+            </button>
+            <button
+              type="button"
+              className={`segment-btn ${inputMode === "grid" ? "active" : ""}`}
+              onClick={() => setInputMode("grid")}
+            >
+              Grid
+            </button>
+          </div>
         </div>
 
         <div className="form-group">
@@ -71,40 +95,63 @@ export default function GameSetup({ onCreateGame }) {
             <span className="label-icon">🧿</span>
             Mascot
           </label>
-          <select value={mascotEnabled ? "on" : "off"} onChange={(e) => setMascotEnabled(e.target.value === "on")}>
-            <option value="on">Show mascot</option>
-            <option value="off">Hide mascot</option>
-          </select>
+          <div className="control-segment">
+            <button
+              type="button"
+              className={`segment-btn ${mascotEnabled ? "active" : ""}`}
+              onClick={() => setMascotEnabled(true)}
+            >
+              Show
+            </button>
+            <button
+              type="button"
+              className={`segment-btn ${!mascotEnabled ? "active" : ""}`}
+              onClick={() => setMascotEnabled(false)}
+            >
+              Hide
+            </button>
+          </div>
         </div>
 
         {mode === "x01" && (
           <>
-        <div className="form-group">
-          <label>
-            <span className="label-icon">🎯</span>
-            Starting Score
-          </label>
-          <select value={startingScore} onChange={(e) => setStartingScore(e.target.value)}>
-            <option value="501">501</option>
-            <option value="301">301</option>
-            <option value="101">101</option>
-            <option value="1001">1001</option>
-          </select>
-        </div>
+            <div className="form-group">
+              <label>
+                <span className="label-icon">🎯</span>
+                Starting Score
+              </label>
+              <div className="control-chip-group">
+                {["501", "301", "101", "1001"].map((value) => (
+                  <button
+                    key={value}
+                    type="button"
+                    className={`chip-btn ${startingScore === value ? "active" : ""}`}
+                    onClick={() => setStartingScore(value)}
+                  >
+                    {value}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-        <div className="form-group">
-          <label>
-            <span className="label-icon">🏁</span>
-            Number of Legs
-          </label>
-          <select value={legs} onChange={(e) => setLegs(e.target.value)}>
-            <option value="1">1 Leg</option>
-            <option value="3">3 Legs</option>
-            <option value="5">5 Legs</option>
-            <option value="7">7 Legs</option>
-            <option value="9">9 Legs</option>
-          </select>
-        </div>
+            <div className="form-group">
+              <label>
+                <span className="label-icon">🏁</span>
+                Number of Legs
+              </label>
+              <div className="control-chip-group">
+                {["1", "3", "5", "7", "9"].map((value) => (
+                  <button
+                    key={value}
+                    type="button"
+                    className={`chip-btn ${legs === value ? "active" : ""}`}
+                    onClick={() => setLegs(value)}
+                  >
+                    {value} Leg{value === "1" ? "" : "s"}
+                  </button>
+                ))}
+              </div>
+            </div>
           </>
         )}
 
@@ -113,11 +160,18 @@ export default function GameSetup({ onCreateGame }) {
             <span className="label-icon">👥</span>
             Number of Players
           </label>
-          <select value={numPlayers} onChange={handleNumPlayersChange}>
-            <option value="2">2 Players</option>
-            <option value="3">3 Players</option>
-            <option value="4">4 Players</option>
-          </select>
+          <div className="control-chip-group">
+            {["2", "3", "4"].map((value) => (
+              <button
+                key={value}
+                type="button"
+                className={`chip-btn ${numPlayers === value ? "active" : ""}`}
+                onClick={() => handleNumPlayersChange({ target: { value } })}
+              >
+                {value} Players
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="form-group">
