@@ -109,6 +109,9 @@ select {
 
 .section-block {
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .section-title {
@@ -245,6 +248,9 @@ select {
   border-radius: 18px;
   padding: 18px;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+  margin: 0 auto;
+  width: 100%;
+  max-width: 520px;
 }
 
 .input-header {
@@ -297,45 +303,59 @@ select {
 
 .dartboard-wrap {
   margin-top: 14px;
+  display: grid;
+  justify-items: center;
+  width: 100%;
 }
 
 .dartboard-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 120px;
-  gap: 16px;
+  grid-template-columns: 1fr;
+  gap: 12px;
   align-items: center;
+  justify-items: center;
+  width: 100%;
 }
 
 .dartboard-container {
   display: grid;
   place-items: center;
+  width: 100%;
 }
 
 .dartboard {
-  width: min(320px, 85vw);
+  width: min(420px, 92vw);
   height: auto;
   touch-action: manipulation;
+  margin: 0 auto;
+  transform: translateX(-22px);
+}
+
+.dartboard-grid .quick-throws.vertical {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .board-outer {
-  fill: #0f172a;
-  stroke: #0f172a;
+  fill: #0b0b0b;
+  stroke: #0b0b0b;
 }
 
 .board-segment.light {
-  fill: #f5f5f5;
+  fill: #f1f0e8;
 }
 
 .board-segment.dark {
-  fill: #1f2937;
+  fill: #0f0f12;
 }
 
 .board-ring.ring-red {
-  fill: #ef4444;
+  fill: #b91c1c;
 }
 
 .board-ring.ring-green {
-  fill: #16a34a;
+  fill: #1f7a3f;
 }
 
 .board-segment.active,
@@ -344,15 +364,15 @@ select {
 }
 
 .board-bull {
-  fill: #16a34a;
+  fill: #1f7a3f;
 }
 
 .board-bull-inner {
-  fill: #ef4444;
+  fill: #b91c1c;
 }
 
 .board-number {
-  fill: #f8fafc;
+  fill: #e5e7eb;
   font-size: 14px;
   font-weight: 700;
 }
