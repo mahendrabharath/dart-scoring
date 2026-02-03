@@ -272,6 +272,14 @@ select {
   color: #fbbf24;
 }
 
+.turn-score {
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(139, 92, 246, 0.2);
+  color: #e9d5ff;
+}
+
 .dart-display {
   display: flex;
   justify-content: center;
@@ -633,6 +641,8 @@ select {
   color: #111827;
   font-weight: 700;
   cursor: pointer;
+  min-width: 110px;
+  text-align: center;
 }
 
 .throw-btn.secondary {
@@ -863,13 +873,26 @@ select {
 }
 
 .mascot-overlay-stage {
-  width: 260px;
-  height: 260px;
+  width: 220px;
+  height: 220px;
+  display: grid;
+  place-items: center;
 }
 
-.mascot-canvas {
+.mascot-gif {
   width: 100%;
   height: 100%;
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+}
+
+.mascot-debug-text {
+  color: #111827;
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-weight: 700;
 }
 
 @media (max-width: 860px) {
