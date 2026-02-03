@@ -5,6 +5,112 @@ const reactionGifs = {
   thumbs: "/ReactionGifs/Thumbsup.gif",
 };
 
+const PRAISE_LINES = [
+  "Not bad.",
+  "Good try.",
+  "Nice.",
+  "Awesome.",
+  "Solid hit!",
+  "Sweet throw!",
+  "Clean shot!",
+  "Sharp aim!",
+  "Great dart!",
+  "Lovely line!",
+  "Sweet spot!",
+  "On the mark!",
+  "Good form!",
+  "That'll do.",
+  "Strong toss!",
+  "Smooth release!",
+  "Nice touch!",
+  "Well done!",
+  "Good rhythm!",
+  "Great focus!",
+  "Steady hand!",
+  "Clean follow!",
+  "Sweet strike!",
+  "Bright shot!",
+  "Nice one!",
+  "Great timing!",
+  "Good pace!",
+  "You’re locked in.",
+  "Dialed in!",
+  "Great effort!",
+  "Cool finish!",
+  "Solid control!",
+  "Aim is true!",
+  "Nice curve!",
+  "Good arc!",
+  "Nice snap!",
+  "That’s crisp!",
+  "Sweet aim!",
+  "Great line!",
+  "Perfect touch!",
+  "Neat hit!",
+  "That’s clean!",
+  "Good precision!",
+  "Strong point!",
+  "Laser line!",
+  "Great strike!",
+  "Elite toss!",
+  "Fantastic!",
+  "Brilliant!",
+  "Excellent!",
+];
+
+const ROAST_LINES = [
+  "Not even close.",
+  "Gravity wins.",
+  "That was a choice.",
+  "Aim harder.",
+  "Try the board next time.",
+  "The wall felt that.",
+  "Oof.",
+  "Missed by a mile.",
+  "Nice try... not.",
+  "Is the board okay?",
+  "That dart is lonely.",
+  "Warming up, right?",
+  "That was bold.",
+  "So close. Not.",
+  "Airball classic.",
+  "Maybe blink less.",
+  "Unlucky... again.",
+  "Rough throw.",
+  "That hurt to watch.",
+  "At least it left your hand.",
+  "The floor approves.",
+  "Board says no.",
+  "Wrong zip code.",
+  "Aim low, hit lower.",
+  "Keep practicing.",
+  "That was adorable.",
+  "The dart is confused.",
+  "Try the center... of the room.",
+  "That’s not it.",
+  "Oopsie.",
+  "Yikes.",
+  "That was wild.",
+  "Are you okay?",
+  "Maybe switch hands.",
+  "Confidence > accuracy.",
+  "The board dodged it.",
+  "Too spicy, too far.",
+  "Missed the memo.",
+  "That’s a warm‑up.",
+  "Bold strategy.",
+  "The board laughed.",
+  "Just a scratch.",
+  "That was tragic.",
+  "Out of practice?",
+  "The dart blinked.",
+  "Try again.",
+  "Less power, more aim.",
+  "That was brave.",
+  "Not your best.",
+  "We saw that.",
+];
+
 const SEGMENTS = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5];
 
 const BOARD = {
@@ -205,16 +311,23 @@ export default function ScoreInput({
     }
 
     const pickLaugh = () => reactionGifs.laugh[Math.floor(Math.random() * reactionGifs.laugh.length)];
+    const pickLine = (lines) => lines[Math.floor(Math.random() * lines.length)];
     const forceGood = dart.value === 19 || dart.value === 25 || dart.value === 50;
     let gif = reactionGifs.good;
+    let line = pickLine(PRAISE_LINES);
     if (!forceGood && dart.value >= 16) {
       gif = reactionGifs.thumbs;
+      line = pickLine(PRAISE_LINES);
     } else if (dart.value > 0 && dart.value <= 9) {
       gif = pickLaugh();
+      line = pickLine(ROAST_LINES);
+    } else if (dart.value === 0) {
+      gif = pickLaugh();
+      line = pickLine(ROAST_LINES);
     }
 
     if (mascotEnabled) {
-      setMascot({ gif, key: `mascot-${nextKey()}` });
+      setMascot({ gif, line, key: `mascot-${nextKey()}` });
       if (mascotTimerRef.current) {
         clearTimeout(mascotTimerRef.current);
       }
@@ -323,7 +436,10 @@ export default function ScoreInput({
           >
             <div className="mascot-overlay-stage">
               {mascot ? (
-                <img className="mascot-gif" src={mascot.gif} alt="Mascot reaction" />
+                <>
+                  <img className="mascot-gif" src={mascot.gif} alt="Mascot reaction" />
+                  <div className="mascot-caption">{mascot.line}</div>
+                </>
               ) : (
                 <span className="mascot-debug-text">Mascot debug mode</span>
               )}

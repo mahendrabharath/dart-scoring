@@ -168,7 +168,6 @@ export default function Home() {
   return (
     <div className="app-container">
       <div className="app-header">
-        <h1>🎯 Dart Scoreboard</h1>
         <div className="game-info">
           {game.mode === "free" ? (
             <span>Free Play</span>
@@ -219,6 +218,7 @@ export default function Home() {
                 onDartsRemainingChange={handleDartsRemainingChange}
                 inputMode={game.inputMode}
                 mascotEnabled={game.mascotEnabled}
+                mode={game.mode}
               />
             </div>
           )}
