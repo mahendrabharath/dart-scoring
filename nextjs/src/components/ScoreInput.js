@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import Mascot3D from "./Mascot3D";
+const reactionGifs = {
+  laugh: ["/ReactionGifs/Laughing.gif", "/ReactionGifs/Laughing2.gif"],
+  good: "/ReactionGifs/Good.gif",
+  thumbs: "/ReactionGifs/Thumbsup.gif",
+};
 
 const SEGMENTS = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5];
 
@@ -88,7 +92,14 @@ const getHitPointForDart = (dart) => {
   return polarToCartesian(radius, midAngle);
 };
 
-export default function ScoreInput({ player, onScoreSubmit, onDartsRemainingChange, inputMode = "board", mascotEnabled = true }) {
+export default function ScoreInput({
+  player,
+  onScoreSubmit,
+  onDartsRemainingChange,
+  inputMode = "board",
+  mascotEnabled = true,
+  mode = "x01",
+}) {
   const [darts, setDarts] = useState([]);
   const [activeSegment, setActiveSegment] = useState(null);
   const [ripple, setRipple] = useState(null);
@@ -193,23 +204,23 @@ export default function ScoreInput({ player, onScoreSubmit, onDartsRemainingChan
       ]);
     }
 
-    const reactions = {
-      bull: { mood: "cheer", text: "Bullseye! 🎯" },
-      "double-bull": { mood: "cheer", text: "DBull!! 🔥" },
-      triple: { mood: "excited", text: "Triple! ⚡" },
-      double: { mood: "happy", text: "Nice double! ✨" },
-      miss: { mood: "tantrum", text: "Oops... 🙈" },
-    };
-    const fallback = dart.value >= 50 ? { mood: "cheer", text: "Woohoo! 🎉" } : { mood: "happy", text: "Nice shot! 👍" };
-    const reaction = reactions[dart.type] || fallback;
+    const pickLaugh = () => reactionGifs.laugh[Math.floor(Math.random() * reactionGifs.laugh.length)];
+    const forceGood = dart.value === 19 || dart.value === 25 || dart.value === 50;
+    let gif = reactionGifs.good;
+    if (!forceGood && dart.value >= 16) {
+      gif = reactionGifs.thumbs;
+    } else if (dart.value > 0 && dart.value <= 9) {
+      gif = pickLaugh();
+    }
+
     if (mascotEnabled) {
-      setMascot({ ...reaction, key: `mascot-${nextKey()}` });
+      setMascot({ gif, key: `mascot-${nextKey()}` });
       if (mascotTimerRef.current) {
         clearTimeout(mascotTimerRef.current);
       }
       mascotTimerRef.current = setTimeout(() => {
         setMascot(null);
-      }, 3000);
+      }, 1000);
     }
   };
 
@@ -283,6 +294,7 @@ export default function ScoreInput({ player, onScoreSubmit, onDartsRemainingChan
   };
 
   const totalScore = darts.reduce((sum, dart) => sum + dart.value, 0);
+  const liveScore = mode === "free" ? player.currentScore + totalScore : Math.max(0, player.currentScore - totalScore);
   const remainingDarts = 3 - darts.length;
 
   return (
@@ -291,6 +303,7 @@ export default function ScoreInput({ player, onScoreSubmit, onDartsRemainingChan
         <div className="turn-banner">
           <span className="turn-chip">🎯 Your Turn</span>
           <h3>{player.name}</h3>
+          <span className="turn-score">{liveScore}</span>
         </div>
         <div className="dart-display">
           {[0, 1, 2].map((index) => (
@@ -305,14 +318,15 @@ export default function ScoreInput({ player, onScoreSubmit, onDartsRemainingChan
       <div className="dartboard-wrap">
         {(mascotEnabled && (mascot || mascotDebug)) && (
           <div
-            className={`mascot-overlay ${mascotDebug ? "mascot-debug" : ""} mascot-${(mascot || {}).mood || "happy"}`}
+            className={`mascot-overlay ${mascotDebug ? "mascot-debug" : ""}`}
             key={(mascot || {}).key || "debug"}
           >
-            <div className="mascot-overlay-bubble">
-              {(mascot && mascot.text) || "Mascot debug mode"}
-            </div>
             <div className="mascot-overlay-stage">
-              <Mascot3D reaction={mascot || { mood: "happy", key: "debug" }} />
+              {mascot ? (
+                <img className="mascot-gif" src={mascot.gif} alt="Mascot reaction" />
+              ) : (
+                <span className="mascot-debug-text">Mascot debug mode</span>
+              )}
             </div>
           </div>
         )}

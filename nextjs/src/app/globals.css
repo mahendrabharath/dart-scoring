@@ -887,13 +887,6 @@ select {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
 }
 
-.mascot-debug-text {
-  color: #111827;
-  background: #fff;
-  padding: 8px 12px;
-  border-radius: 12px;
-  font-weight: 700;
-}
 
 @media (max-width: 860px) {
   .dartboard-grid {
