@@ -4,8 +4,8 @@ export default function GameSetup({ onCreateGame }) {
   const [mode, setMode] = useState("x01");
   const [startingScore, setStartingScore] = useState("501");
   const [legs, setLegs] = useState("1");
-  const [playerNames, setPlayerNames] = useState(["Player 1", "Player 2"]);
-  const [numPlayers, setNumPlayers] = useState("2");
+  const [playerNames, setPlayerNames] = useState(["Player 1"]);
+  const [numPlayers, setNumPlayers] = useState("1");
   const [inputMode, setInputMode] = useState("board");
   const [mascotEnabled, setMascotEnabled] = useState(true);
 
@@ -161,14 +161,14 @@ export default function GameSetup({ onCreateGame }) {
             Number of Players
           </label>
           <div className="control-chip-group">
-            {["2", "3", "4"].map((value) => (
+            {["1", "2", "3", "4"].map((value) => (
               <button
                 key={value}
                 type="button"
                 className={`chip-btn ${numPlayers === value ? "active" : ""}`}
                 onClick={() => handleNumPlayersChange({ target: { value } })}
               >
-                {value} Players
+                {value} Player{value === "1" ? "" : "s"}
               </button>
             ))}
           </div>
